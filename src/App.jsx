@@ -2,8 +2,8 @@ import clsx from 'clsx'
 import { Form, Formik, useField } from 'formik'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
-import * as Yup from 'yup'
 import isEmail from 'validator/es/lib/isEmail'
+import * as Yup from 'yup'
 
 /**
  * Input component
