@@ -3,6 +3,7 @@ import { Form, Formik, useField } from 'formik'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 import * as Yup from 'yup'
+import isEmail from 'validator/es/lib/isEmail'
 
 /**
  * Input component
@@ -82,7 +83,9 @@ function Button({
 }
 
 const authValidationSchema = Yup.object({
-  email: Yup.string().required().email(),
+  email: Yup.string()
+    .required()
+    .test('valid-email', 'Please enter a valid email address', isEmail),
   password: Yup.string().required(),
 })
 
@@ -98,7 +101,7 @@ const authFormClasses = clsx(
   'bg-slate-100/20',
   'backdrop:blur-[10px]',
   'clip-parallelogram',
-  'font-bold'
+  'max-w-[490px]'
 )
 
 async function authMocked({ email }) {
