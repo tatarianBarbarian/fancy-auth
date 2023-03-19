@@ -5,7 +5,7 @@ import { useState } from 'react'
 import * as Yup from 'yup'
 
 /**
- * #TODO:
+ * Input component
  * @param {import('react').InputHTMLAttributes & {label: String}} props Text input props
  */
 function TextInput({ label, id, required = false, className = '', ...props }) {
@@ -55,7 +55,7 @@ TextInput.propTypes = {
 }
 
 /**
- *
+ * Button component
  * @param {React.ButtonHTMLAttributes & {isLoading: Boolean}} props
  */
 function Button({
@@ -102,13 +102,26 @@ const authFormClasses = clsx(
 )
 
 async function authMocked({ email }) {
+  const specialEmailsWithErrorMessages = {
+    'null@error.com': 'Incorrect username or password',
+    '500@error.com': 'Service unavailable. Please, try again later',
+    'net@error.com':
+      'Network error. Check your internet connection and try again',
+  }
+
   return new Promise((res, rej) => {
     setTimeout(() => {
-      res({
-        user: {
-          username: email,
-        },
-      })
+      if (Object.keys(specialEmailsWithErrorMessages).includes(email)) {
+        rej({
+          message: specialEmailsWithErrorMessages[email],
+        })
+      } else {
+        res({
+          user: {
+            username: email,
+          },
+        })
+      }
     }, Math.random() * 1500)
   })
 }
@@ -120,6 +133,8 @@ async function authMocked({ email }) {
  * @param {Function} props.onLogin Login handler
  */
 function AuthForm({ onLogin }) {
+  const [formError, setFormError] = useState('')
+
   return (
     <div className={authFormClasses}>
       <Formik
@@ -133,7 +148,7 @@ function AuthForm({ onLogin }) {
             })
             .catch((error) => {
               actions.setSubmitting(false)
-              console.error(error)
+              setFormError(error.message)
             })
         }}
       >
@@ -160,9 +175,16 @@ function AuthForm({ onLogin }) {
             <Button
               type="submit"
               isLoading={formikRenderProps.isSubmitting}
+              className="mb-2"
             >
               Sign in
             </Button>
+            <div
+              id="auth-form-errors"
+              className="text-orange-700 first-letter:capitalize text-sm"
+            >
+              {formError}
+            </div>
           </Form>
         )}
       </Formik>
