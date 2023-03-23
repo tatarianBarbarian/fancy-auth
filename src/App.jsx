@@ -137,6 +137,7 @@ async function authMocked({ email }) {
  */
 function AuthForm({ onLogin }) {
   const [formError, setFormError] = useState('')
+  const [preventSubmit, setPreventSubmit] = useState(false)
 
   return (
     <div className={authFormClasses}>
@@ -144,13 +145,19 @@ function AuthForm({ onLogin }) {
         initialValues={authInitialValues}
         validationSchema={authValidationSchema}
         onSubmit={(values, actions) => {
+          setPreventSubmit(true)
+
+          if (preventSubmit) return
+
           authMocked(values)
             .then((auth) => {
               actions.setSubmitting(false)
+              setPreventSubmit(false)
               onLogin(auth)
             })
             .catch((error) => {
               actions.setSubmitting(false)
+              setPreventSubmit(false)
               setFormError(error.message)
             })
         }}
