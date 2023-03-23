@@ -96,7 +96,7 @@ const authInitialValues = {
 
 const authFormClasses = clsx(
   'inline-block',
-  'p-28',
+  'sm:p-28 px-12 py-16',
   'backdrop-blur-[10px]',
   'bg-slate-100/20',
   'backdrop:blur-[10px]',
