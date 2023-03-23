@@ -174,6 +174,7 @@ function AuthForm({ onLogin }) {
               placeholder="********"
               className="mb-6"
               id="password"
+              required
             />
             <Button
               type="submit"
