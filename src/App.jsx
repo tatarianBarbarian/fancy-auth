@@ -39,9 +39,14 @@ function TextInput({ label, id, required = false, className = '', ...props }) {
         id={id}
         className={inputClasses}
         aria-required={required}
+        aria-describedby={`description-${id}`}
       />
       {meta.touched && meta.error ? (
-        <div className="text-orange-700 first-letter:capitalize text-sm">
+        <div
+          className="text-orange-700 first-letter:capitalize text-sm"
+          id={`description-${id}`}
+          aria-live="assertive"
+        >
           {meta.error}
         </div>
       ) : null}
@@ -76,6 +81,7 @@ function Button({
       className={buttonClasses}
       type={type}
       {...props}
+      aria-busy={isLoading}
     >
       {isLoading ? 'Loading...' : children}
     </button>
@@ -187,13 +193,16 @@ function AuthForm({ onLogin }) {
               type="submit"
               isLoading={formikRenderProps.isSubmitting}
               className="mb-2"
+              aria-describedby="auth-form-errors"
             >
               Sign in
             </Button>
             <div
               id="auth-form-errors"
+              aria-live="assertive"
               className="text-orange-700 first-letter:capitalize text-sm"
             >
+              <span className="sr-only">There is an error in form:</span>
               {formError}
             </div>
           </Form>
