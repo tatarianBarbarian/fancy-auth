@@ -102,12 +102,14 @@ const authInitialValues = {
 
 const authFormClasses = clsx(
   'inline-block',
-  'sm:p-28 px-12 py-16',
+  'sm:p-28 px-10 py-14',
   'backdrop-blur-[10px]',
   'bg-slate-100/20',
   'backdrop:blur-[10px]',
-  'clip-parallelogram',
-  'max-w-[490px]'
+  'sm:clip-form',
+  'w-full',
+  'max-w-full',
+  'sm:max-w-[490px]'
 )
 
 async function authMocked({ email }) {
