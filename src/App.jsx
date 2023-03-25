@@ -14,6 +14,7 @@ function TextInput({ label, id, required = false, className = '', ...props }) {
   const labelClasses = clsx('block', 'mb-1')
   const inputClasses = clsx(
     'block',
+    'w-full',
     'border-[1px]',
     'p-1',
     'mb-1',
