@@ -1,93 +1,12 @@
+import Button from './Button'
+import TextInput from './TextInput'
+import { authenticate } from './auth'
 import clsx from 'clsx'
-import { Form, Formik, useField } from 'formik'
+import { Form, Formik } from 'formik'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 import isEmail from 'validator/es/lib/isEmail'
 import * as Yup from 'yup'
-
-/**
- * Input component
- * @param {import('react').InputHTMLAttributes & {label: String}} props Text input props
- */
-function TextInput({ label, id, required = false, className = '', ...props }) {
-  const [field, meta] = useField(props)
-  const labelClasses = clsx('block', 'mb-1')
-  const inputClasses = clsx(
-    'block',
-    'w-full',
-    'border-[1px]',
-    'p-1',
-    'mb-1',
-    'outline-2',
-    'outline-violet-600',
-    'placeholder:text-slate-600',
-    'p-2',
-    'bg-transparent',
-    'border-slate-500'
-  )
-
-  return (
-    <div className={className}>
-      <label
-        className={labelClasses}
-        htmlFor={id}
-      >
-        {label}
-      </label>
-      <input
-        {...field}
-        {...props}
-        id={id}
-        className={inputClasses}
-        aria-required={required}
-        aria-describedby={`description-${id}`}
-      />
-      {meta.touched && meta.error ? (
-        <div
-          className="text-orange-700 first-letter:capitalize text-sm"
-          id={`description-${id}`}
-          aria-live="assertive"
-        >
-          {meta.error}
-        </div>
-      ) : null}
-    </div>
-  )
-}
-
-TextInput.propTypes = {
-  label: PropTypes.string.isRequired,
-  id: PropTypes.string,
-  required: PropTypes.bool,
-}
-
-/**
- * Button component
- * @param {React.ButtonHTMLAttributes & {isLoading: Boolean}} props
- */
-function Button({
-  className = '',
-  children,
-  isLoading = false,
-  type = 'button',
-  ...props
-}) {
-  const buttonClasses = clsx(
-    'px-3 py-2 border-[1px] border-slate-500 text-slate-700 outline-2 outline-violet-600',
-    className
-  )
-
-  return (
-    <button
-      className={buttonClasses}
-      type={type}
-      {...props}
-      aria-busy={isLoading}
-    >
-      {isLoading ? 'Loading...' : children}
-    </button>
-  )
-}
 
 const authValidationSchema = Yup.object({
   email: Yup.string()
@@ -113,31 +32,6 @@ const authFormClasses = clsx(
   'sm:max-w-[490px]'
 )
 
-async function authMocked({ email }) {
-  const specialEmailsWithErrorMessages = {
-    'null@error.com': 'Incorrect username or password',
-    '500@error.com': 'Service unavailable. Please, try again later',
-    'net@error.com':
-      'Network error. Check your internet connection and try again',
-  }
-
-  return new Promise((res, rej) => {
-    setTimeout(() => {
-      if (Object.keys(specialEmailsWithErrorMessages).includes(email)) {
-        rej({
-          message: specialEmailsWithErrorMessages[email],
-        })
-      } else {
-        res({
-          user: {
-            username: email,
-          },
-        })
-      }
-    }, Math.random() * 1500)
-  })
-}
-
 /**
  * Authentication form
  *
@@ -158,7 +52,7 @@ function AuthForm({ onLogin }) {
 
           if (preventSubmit) return
 
-          authMocked(values)
+          authenticate(values)
             .then((auth) => {
               actions.setSubmitting(false)
               setPreventSubmit(false)
