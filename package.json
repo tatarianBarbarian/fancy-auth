@@ -8,7 +8,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "prepare": "husky install",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "test": "vitest --run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "clsx": "^1.2.1",
