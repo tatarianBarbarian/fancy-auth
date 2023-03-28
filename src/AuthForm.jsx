@@ -1,6 +1,5 @@
 import Button from './Button'
 import TextInput from './TextInput'
-import { authenticate } from './auth'
 import clsx from 'clsx'
 import { Form, Formik } from 'formik'
 import PropTypes from 'prop-types'
@@ -32,39 +31,49 @@ const authFormClasses = clsx(
   'sm:max-w-[490px]'
 )
 
+const useSubmitLocker = (onSubmit, onSuccess, onError) => {
+  const [preventSubmit, setPreventSubmit] = useState(false)
+
+  const handler = async (values, actions) => {
+    setPreventSubmit(true)
+
+    if (preventSubmit) return
+
+    try {
+      await onSubmit(values, actions)
+      onSuccess()
+      actions.setSubmitting(false)
+      setPreventSubmit(false)
+    } catch (error) {
+      actions.setSubmitting(false)
+      setPreventSubmit(false)
+      onError(error)
+    }
+  }
+
+  return handler
+}
+
 /**
  * Authentication form
  *
  * @param {Object} props Component props
- * @param {Function} props.onLogin Login handler
+ * @param {Function} props.onSubmit Login handler
  */
-export default function AuthForm({ onLogin }) {
+export default function AuthForm({ onSubmit }) {
   const [formError, setFormError] = useState('')
-  const [preventSubmit, setPreventSubmit] = useState(false)
+  const submitHandler = useSubmitLocker(
+    onSubmit,
+    () => setFormError(''),
+    (error) => setFormError(error.message)
+  )
 
   return (
     <div className={authFormClasses}>
       <Formik
         initialValues={authInitialValues}
         validationSchema={authValidationSchema}
-        onSubmit={(values, actions) => {
-          console.log('aaa')
-          setPreventSubmit(true)
-
-          if (preventSubmit) return
-
-          authenticate(values)
-            .then((auth) => {
-              actions.setSubmitting(false)
-              setPreventSubmit(false)
-              onLogin(auth)
-            })
-            .catch((error) => {
-              actions.setSubmitting(false)
-              setPreventSubmit(false)
-              setFormError(error.message)
-            })
-        }}
+        onSubmit={submitHandler}
       >
         {(formikRenderProps) => (
           <Form>
@@ -115,5 +124,5 @@ export default function AuthForm({ onLogin }) {
 }
 
 AuthForm.propTypes = {
-  onLogin: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 }

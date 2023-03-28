@@ -1,5 +1,6 @@
 import AuthForm from './AuthForm'
 import Button from './Button'
+import { authenticate } from './auth'
 import { useState } from 'react'
 
 export default function App() {
@@ -10,7 +11,9 @@ export default function App() {
     return (
       <div className="min-h-screen grid place-items-center gap-[1ch]">
         <AuthForm
-          onLogin={(auth) => {
+          onSubmit={async (values) => {
+            const auth = await authenticate(values)
+
             setUser(auth.user)
             setState('session')
           }}
