@@ -48,6 +48,7 @@ export default function AuthForm({ onLogin }) {
         initialValues={authInitialValues}
         validationSchema={authValidationSchema}
         onSubmit={(values, actions) => {
+          console.log('aaa')
           setPreventSubmit(true)
 
           if (preventSubmit) return
@@ -99,8 +100,12 @@ export default function AuthForm({ onLogin }) {
               aria-live="assertive"
               className="text-orange-700 first-letter:capitalize text-sm"
             >
-              <span className="sr-only">There is an error in form:</span>
-              {formError}
+              {formError && (
+                <>
+                  <span className="sr-only">There is an error in form:</span>
+                  {formError}
+                </>
+              )}
             </div>
           </Form>
         )}
