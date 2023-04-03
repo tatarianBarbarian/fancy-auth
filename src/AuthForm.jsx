@@ -31,7 +31,7 @@ const authFormClasses = clsx(
   'sm:max-w-[490px]'
 )
 
-const useSubmitLocker = (onSubmit, onSuccess, onError) => {
+const useSubmitLocker = (onSubmit, setError) => {
   const [preventSubmit, setPreventSubmit] = useState(false)
 
   const handler = async (values, actions) => {
@@ -39,15 +39,16 @@ const useSubmitLocker = (onSubmit, onSuccess, onError) => {
 
     if (preventSubmit) return
 
+    setError('')
+
     try {
       await onSubmit(values, actions)
-      onSuccess()
       actions.setSubmitting(false)
       setPreventSubmit(false)
     } catch (error) {
       actions.setSubmitting(false)
       setPreventSubmit(false)
-      onError(error)
+      setError(error.message)
     }
   }
 
@@ -62,11 +63,7 @@ const useSubmitLocker = (onSubmit, onSuccess, onError) => {
  */
 export default function AuthForm({ onSubmit }) {
   const [formError, setFormError] = useState('')
-  const submitHandler = useSubmitLocker(
-    onSubmit,
-    () => setFormError(''),
-    (error) => setFormError(error.message)
-  )
+  const submitHandler = useSubmitLocker(onSubmit, setFormError)
 
   return (
     <div className={authFormClasses}>
