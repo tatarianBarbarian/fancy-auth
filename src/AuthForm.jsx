@@ -73,7 +73,10 @@ export default function AuthForm({ onSubmit }) {
       <Formik
         initialValues={authInitialValues}
         validationSchema={authValidationSchema}
-        onSubmit={submitHandler}
+        onSubmit={(...args) => {
+          setFormError('')
+          submitHandler(...args)
+        }}
       >
         {(formikRenderProps) => (
           <Form>
