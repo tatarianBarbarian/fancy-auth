@@ -3,11 +3,16 @@ import Button from './Button'
 import { authenticate } from './auth'
 import { useState } from 'react'
 
+const STATES = {
+  AUTH: 'auth',
+  SESSION: 'session',
+}
+
 export default function App() {
-  const [state, setState] = useState('auth')
+  const [state, setState] = useState(STATES.AUTH)
   const [user, setUser] = useState(null)
 
-  if (state === 'auth') {
+  if (state === STATES.AUTH) {
     return (
       <div className="min-h-screen grid place-items-center gap-[1ch]">
         <AuthForm
@@ -15,14 +20,14 @@ export default function App() {
             const auth = await authenticate(values)
 
             setUser(auth.user)
-            setState('session')
+            setState(STATES.SESSION)
           }}
         />
       </div>
     )
   }
 
-  if (state === 'session') {
+  if (state === STATES.SESSION) {
     return (
       <div className="min-h-screen grid place-items-center gap-[1ch] text-center">
         <div>
@@ -30,7 +35,7 @@ export default function App() {
           <Button
             onClick={() => {
               setUser(null)
-              setState('auth')
+              setState(STATES.AUTH)
             }}
           >
             Logout
