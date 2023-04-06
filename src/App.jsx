@@ -28,6 +28,7 @@ export default function App() {
             'bg-slate-100/20'
           )}
         >
+          <h1 className="text-2xl mb-3">Sign in</h1>
           <AuthForm
             onSubmit={async (values) => {
               const auth = await authenticate(values)
