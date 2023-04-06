@@ -1,5 +1,6 @@
 import Button from './Button'
 import TextInput from './TextInput'
+import useSubmitLocker from './useSubmitLocker'
 import { Form, Formik } from 'formik'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
@@ -16,29 +17,6 @@ const authValidationSchema = Yup.object({
 const authInitialValues = {
   email: '',
   password: '',
-}
-
-const useSubmitLocker = (onSubmit, onSuccess, onError) => {
-  const [preventSubmit, setPreventSubmit] = useState(false)
-
-  const handler = async (values, actions) => {
-    setPreventSubmit(true)
-
-    if (preventSubmit) return
-
-    try {
-      await onSubmit(values, actions)
-      onSuccess()
-      actions.setSubmitting(false)
-      setPreventSubmit(false)
-    } catch (error) {
-      actions.setSubmitting(false)
-      setPreventSubmit(false)
-      onError(error)
-    }
-  }
-
-  return handler
 }
 
 /**
@@ -66,7 +44,6 @@ export default function AuthForm({ onSubmit }) {
     >
       {(formikRenderProps) => (
         <Form>
-          <h1 className="text-2xl mb-3">Sign in</h1>
           <TextInput
             label="Email"
             type="email"
