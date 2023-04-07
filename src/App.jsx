@@ -1,5 +1,6 @@
 import AuthForm from './AuthForm'
 import Button from './Button'
+import RecoveryForm from './RecoveryForm'
 import { authenticate } from './auth'
 import clsx from 'clsx'
 import { useState } from 'react'
@@ -7,45 +8,27 @@ import { useState } from 'react'
 const STATES = {
   AUTH: 'auth',
   SESSION: 'session',
+  RECOVER: 'recover',
 }
 
 export default function App() {
   const [state, setState] = useState(STATES.AUTH)
   const [user, setUser] = useState(null)
-
-  if (state === STATES.AUTH) {
-    return (
-      <div className="min-h-screen grid place-items-center gap-[1ch]">
-        <div
-          className={clsx(
-            'sm:clip-form',
-            'backdrop:blur-[10px]',
-            'w-full',
-            'max-w-full',
-            'sm:max-w-[490px]',
-            'inline-block',
-            'sm:p-28 px-10 py-14',
-            'bg-slate-100/20'
-          )}
-        >
-          <h1 className="text-2xl mb-3">Sign in</h1>
-          <AuthForm
-            onSubmit={async (values) => {
-              const auth = await authenticate(values)
-
-              setUser(auth.user)
-              setState(STATES.SESSION)
-            }}
-          />
-        </div>
-      </div>
-    )
-  }
+  const authWrapperStyles = clsx(
+    'sm:clip-form',
+    'backdrop:blur-[10px]',
+    'w-full',
+    'max-w-full',
+    'sm:max-w-[490px]',
+    'inline-block',
+    'sm:py-28 sm:px-24 px-10 py-14',
+    'bg-slate-100/20'
+  )
 
   if (state === STATES.SESSION) {
     return (
-      <div className="min-h-screen grid place-items-center gap-[1ch] text-center">
-        <div>
+      <div className="min-h-screen grid place-items-center gap-[1ch]">
+        <div className="text-center">
           <p className="mb-3">Welcome, {user.username}</p>
           <Button
             onClick={() => {
@@ -59,4 +42,34 @@ export default function App() {
       </div>
     )
   }
+
+  return (
+    <div className="min-h-screen grid place-items-center gap-[1ch]">
+      <div className={authWrapperStyles}>
+        <h1 className="text-2xl mb-3">
+          {state === STATES.AUTH ? 'Sign in' : 'Recover password'}
+        </h1>
+        {state === STATES.AUTH ? (
+          <>
+            <AuthForm
+              onSubmit={async (values) => {
+                const auth = await authenticate(values)
+
+                setUser(auth.user)
+                setState(STATES.SESSION)
+              }}
+            />
+            <Button onClick={() => setState(STATES.RECOVER)}>
+              Forgot password?
+            </Button>
+          </>
+        ) : (
+          <>
+            <RecoveryForm />
+            <Button onClick={() => setState(STATES.AUTH)}>Back to login</Button>
+          </>
+        )}
+      </div>
+    </div>
+  )
 }
