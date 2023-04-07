@@ -14,7 +14,7 @@ export default function Button({
   const buttonClasses = clsx(
     'px-3 py-2',
     'border-[1px] border-slate-500',
-    'text-slate-700 outline-2 outline-violet-600',
+    'text-slate-700 outline-2 outline-violet-600 shadow-inner shadow-slate-200',
     'transition-colors duration-150',
     'hover:bg-slate-500 hover:text-white',
     className
