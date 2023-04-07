@@ -12,7 +12,11 @@ export default function Button({
   ...props
 }) {
   const buttonClasses = clsx(
-    'px-3 py-2 border-[1px] border-slate-500 text-slate-700 outline-2 outline-violet-600',
+    'px-3 py-2',
+    'border-[1px] border-slate-500',
+    'text-slate-700 outline-2 outline-violet-600',
+    'transition-colors duration-150',
+    'hover:bg-slate-500 hover:text-white',
     className
   )
 
