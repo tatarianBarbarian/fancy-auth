@@ -73,18 +73,16 @@ export default function RecoveryForm() {
           >
             Reset password
           </Button>
-          <div
-            id="recovery-form-errors"
-            aria-live="assertive"
-            className="text-orange-700 first-letter:capitalize text-sm mb-3"
-          >
-            {formError && (
-              <>
-                <span className="sr-only">There is an error in form:</span>
-                {formError}
-              </>
-            )}
-          </div>
+          {formError && (
+            <div
+              id="recovery-form-errors"
+              aria-live="assertive"
+              className="text-orange-700 first-letter:capitalize text-sm mb-3"
+            >
+              <span className="sr-only">There is an error in form:</span>
+              {formError}
+            </div>
+          )}
         </Form>
       )}
     </Formik>
