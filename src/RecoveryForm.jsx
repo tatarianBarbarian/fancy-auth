@@ -1,5 +1,6 @@
 import Button from './Button'
 import TextInput from './TextInput'
+import { recover } from './recover'
 import useSubmitLocker from './useSubmitLocker'
 import { Form, Formik } from 'formik'
 import { useState } from 'react'
@@ -22,16 +23,10 @@ const STATES = {
 }
 
 export default function RecoveryForm() {
-  const [, setFormError] = useState('')
+  const [formError, setFormError] = useState('')
   const [state, setState] = useState(STATES.IDLE)
-  const onSubmit = async () => {
-    return new Promise((res) => {
-      setTimeout(() => {
-        res({
-          success: true,
-        })
-      }, Math.random() * 800)
-    })
+  const onSubmit = async (values) => {
+    await recover({ email: values.email })
   }
   const submitHandler = useSubmitLocker(
     onSubmit,
@@ -54,7 +49,10 @@ export default function RecoveryForm() {
     <Formik
       validationSchema={recoverValidationSchema}
       initialValues={recoverInitialValues}
-      onSubmit={submitHandler}
+      onSubmit={(...args) => {
+        setFormError('')
+        submitHandler(...args)
+      }}
     >
       {(formikRenderProps) => (
         <Form>
@@ -70,10 +68,23 @@ export default function RecoveryForm() {
           <Button
             type="submit"
             isLoading={formikRenderProps.isSubmitting}
+            aria-describedby="recovery-form-errors"
             className="mb-2"
           >
             Reset password
           </Button>
+          <div
+            id="recovery-form-errors"
+            aria-live="assertive"
+            className="text-orange-700 first-letter:capitalize text-sm mb-3"
+          >
+            {formError && (
+              <>
+                <span className="sr-only">There is an error in form:</span>
+                {formError}
+              </>
+            )}
+          </div>
         </Form>
       )}
     </Formik>

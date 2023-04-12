@@ -74,7 +74,7 @@ export default function AuthForm({ onSubmit }) {
           <div
             id="auth-form-errors"
             aria-live="assertive"
-            className="text-orange-700 first-letter:capitalize text-sm"
+            className="text-orange-700 first-letter:capitalize text-sm mb-3"
           >
             {formError && (
               <>
