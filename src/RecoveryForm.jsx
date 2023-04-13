@@ -1,6 +1,5 @@
 import Button from './Button'
 import TextInput from './TextInput'
-import { recover } from './recover'
 import useSubmitLocker from './useSubmitLocker'
 import { Form, Formik } from 'formik'
 import { useState } from 'react'
@@ -22,12 +21,9 @@ const STATES = {
   SUCCESS: 'success',
 }
 
-export default function RecoveryForm() {
+export default function RecoveryForm({ onSubmit }) {
   const [formError, setFormError] = useState('')
   const [state, setState] = useState(STATES.IDLE)
-  const onSubmit = async (values) => {
-    await recover({ email: values.email })
-  }
   const submitHandler = useSubmitLocker(
     onSubmit,
     () => {
