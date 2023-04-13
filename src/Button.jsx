@@ -2,17 +2,23 @@ import clsx from 'clsx'
 
 /**
  * Button component
- * @param {React.ButtonHTMLAttributes & {isLoading: Boolean}} props
+ * @param {React.ButtonHTMLAttributes &
+ * {isLoading: Boolean, size: 's' | 'm'}
+ * } props
  */
 export default function Button({
   className = '',
   children,
   isLoading = false,
   type = 'button',
+  size = 'm',
   ...props
 }) {
   const buttonClasses = clsx(
-    'px-3 py-2',
+    {
+      'px-2 py-1 text-sm': size === 's',
+      'px-3 py-2 text-base': size === 'm',
+    },
     'border-[1px] border-slate-500',
     'text-slate-700 outline-2 outline-violet-600 shadow-inner shadow-slate-200',
     'transition-colors duration-150',

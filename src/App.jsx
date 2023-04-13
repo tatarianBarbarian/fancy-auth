@@ -60,7 +60,10 @@ export default function App() {
                 setState(STATES.SESSION)
               }}
             />
-            <Button onClick={() => setState(STATES.RECOVER)}>
+            <Button
+              onClick={() => setState(STATES.RECOVER)}
+              size="s"
+            >
               Forgot password?
             </Button>
           </>
@@ -71,7 +74,12 @@ export default function App() {
                 await recover({ email: values.email })
               }}
             />
-            <Button onClick={() => setState(STATES.AUTH)}>Back to login</Button>
+            <Button
+              onClick={() => setState(STATES.AUTH)}
+              size="s"
+            >
+              Back to login
+            </Button>
           </>
         )}
       </div>
