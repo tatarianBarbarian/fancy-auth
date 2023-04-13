@@ -2,6 +2,7 @@ import AuthForm from './AuthForm'
 import Button from './Button'
 import RecoveryForm from './RecoveryForm'
 import { authenticate } from './auth'
+import { recover } from './recover'
 import clsx from 'clsx'
 import { useState } from 'react'
 
@@ -65,7 +66,11 @@ export default function App() {
           </>
         ) : (
           <>
-            <RecoveryForm />
+            <RecoveryForm
+              onSubmit={async (values) => {
+                await recover({ email: values.email })
+              }}
+            />
             <Button onClick={() => setState(STATES.AUTH)}>Back to login</Button>
           </>
         )}
