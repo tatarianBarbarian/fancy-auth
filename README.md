@@ -2,6 +2,12 @@
 
 A login screen that should be easy and nice to use.
 
+Special email addresses:
+
+- null@error.com
+- net@error.com
+- 500@error.com
+
 ## See in production
 
 https://tatarianbarbarian.github.io/fancy-auth/
