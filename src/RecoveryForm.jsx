@@ -61,7 +61,7 @@ export default function RecoveryForm() {
             type="email"
             name="email"
             placeholder="hello@example.com"
-            className="mb-6"
+            className="mb-8"
             id="email"
             required
           />

@@ -46,7 +46,7 @@ export default function App() {
   return (
     <div className="min-h-screen grid place-items-center gap-[1ch]">
       <div className={authWrapperStyles}>
-        <h1 className="text-2xl mb-3">
+        <h1 className="text-3xl mb-10 text-center">
           {state === STATES.AUTH ? 'Sign in' : 'Recover password'}
         </h1>
         {state === STATES.AUTH ? (

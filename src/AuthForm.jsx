@@ -59,7 +59,7 @@ export default function AuthForm({ onSubmit }) {
             name="password"
             placeholder="********"
             aria-placeholder=""
-            className="mb-6"
+            className="mb-8"
             id="password"
             required
           />
