@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { vi } from 'vitest'
 
 describe('AuthForm', () => {
-  it('Should callback fn if login attempt is successful', async () => {
+  it('Should call callback fn if validation is successful', async () => {
     const cb = vi.fn()
     render(<RecoveryForm onSubmit={cb} />)
 
@@ -33,7 +33,7 @@ describe('AuthForm', () => {
     expect(screen.getByText(/incorrect user/i)).toBeVisible()
   })
 
-  it('Should render success message if everything is fine', async () => {
+  it('Should render success message validation is passed and cb throws no error', async () => {
     const cb = vi.fn()
     render(<RecoveryForm onSubmit={cb} />)
 
